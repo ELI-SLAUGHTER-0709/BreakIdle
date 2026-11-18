@@ -14,30 +14,38 @@
       <button id="shopToggle" class="icon-btn" type="button" aria-label="Toggle shop" aria-controls="shop" aria-expanded="true">☰</button>
     </div>
     <div class="stats" id="headerStats"></div>
+    <div class="settings-wrap">
+      <button id="settingsToggle" class="icon-btn settings-toggle" type="button" aria-label="Open settings" aria-controls="settingsMenu" aria-expanded="false">⚙ <span>Settings</span></button>
+      <section id="settingsMenu" class="settings-menu" aria-label="Settings" hidden>
+        <h2>Settings</h2>
+        <p>Game controls</p>
+        <ul>
+          <li><kbd>←</kbd> <kbd>→</kbd> Move</li>
+          <li><kbd>↑</kbd> Shoot</li>
+          <li><kbd>Ctrl</kbd> Toggle auto fire</li>
+          <li><kbd>Shift</kbd> / <kbd>Space</kbd> Rapid fire</li>
+        </ul>
+        <button id="settingsReset" type="button" class="small-reset">Reset progress</button>
+      </section>
+    </div>
   </header>
 
   <main>
     <aside class="side-panel left-panel" id="leftPanel" aria-hidden="true">
       <canvas id="leftCanvas" class="side-canvas" aria-label="Left panel canvas"></canvas>
     </aside>
-
     <div class="canvas-wrap">
       <canvas id="game" width="800" height="520" aria-label="BreakIdle game canvas"></canvas>
     </div>
-
     <aside class="side-panel shop" id="shop" aria-label="Upgrade shop">
       <canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas>
     </aside>
   </main>
 
   <footer>Created By - Eli Slaughter</footer>
-
   <div class="bottom-bar" id="bottomBar" role="toolbar" aria-label="Game controls">
-    <div class="bottom-left"></div>
-    <div class="bottom-center"></div>
-    <div class="bottom-right"></div>
+    <div class="bottom-left"></div><div class="bottom-center"></div><div class="bottom-right"></div>
   </div>
-
   <div id="rapidCooldownContainer" class="rapid-cooldown-container" aria-hidden="true" hidden>
     <div class="rapid-label">Rapid Fire Cooldown</div>
     <div class="rapid-bar-wrap" role="progressbar" aria-label="Rapid fire cooldown" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -45,11 +53,9 @@
     </div>
     <div id="rapidCooldownText" class="rapid-time">Ready</div>
   </div>
-
   <div id="floating-controls">
     <button id="clearBtn" type="button" aria-label="Reset progress" class="small-reset">Reset</button>
   </div>
-
   <script src="main.js"></script>
 </body>
 </html>
