@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
   <title>BreakIdle</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -10,25 +11,22 @@
   <header>
     <div class="header-left">
       <h1>BreakIdle</h1>
-      <button id="shopToggle" class="icon-btn" aria-label="Toggle shop">☰</button>
+      <button id="shopToggle" class="icon-btn" type="button" aria-label="Toggle shop" aria-controls="shop" aria-expanded="true">☰</button>
     </div>
     <div class="stats" id="headerStats"></div>
   </header>
 
   <main>
-    <!-- LEFT PANEL (for future features) -->
-    <aside class="side-panel left-panel" id="leftPanel" aria-hidden="false">
+    <aside class="side-panel left-panel" id="leftPanel" aria-hidden="true">
       <canvas id="leftCanvas" class="side-canvas" aria-label="Left panel canvas"></canvas>
     </aside>
 
-    <!-- CENTER: GAME CANVAS -->
     <div class="canvas-wrap">
-      <canvas id="game" width="800" height="520" aria-label="Game canvas"></canvas>
+      <canvas id="game" width="800" height="520" aria-label="BreakIdle game canvas"></canvas>
     </div>
 
-    <!-- RIGHT PANEL: SHOP -->
-    <aside class="side-panel shop" id="shop" aria-hidden="false">
-      <canvas id="shopCanvas" class="side-canvas" aria-label="Shop canvas"></canvas>
+    <aside class="side-panel shop" id="shop" aria-label="Upgrade shop">
+      <canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas>
     </aside>
   </main>
 
@@ -40,16 +38,16 @@
     <div class="bottom-right"></div>
   </div>
 
-  <div id="rapidCooldownContainer" class="rapid-cooldown-container" aria-hidden="false" style="display:none;">
+  <div id="rapidCooldownContainer" class="rapid-cooldown-container" aria-hidden="true" hidden>
     <div class="rapid-label">Rapid Fire Cooldown</div>
-    <div class="rapid-bar-wrap">
-      <div id="rapidCooldownBar" class="rapid-fill" style="width:0%"></div>
+    <div class="rapid-bar-wrap" role="progressbar" aria-label="Rapid fire cooldown" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="rapidCooldownBar" class="rapid-fill"></div>
     </div>
     <div id="rapidCooldownText" class="rapid-time">Ready</div>
   </div>
 
   <div id="floating-controls">
-    <button id="clearBtn" aria-label="Reset progress" class="small-reset">Reset</button>
+    <button id="clearBtn" type="button" aria-label="Reset progress" class="small-reset">Reset</button>
   </div>
 
   <script src="main.js"></script>
