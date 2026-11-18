@@ -179,10 +179,8 @@
     update(dt) {
       this.x += this.vx * dt;
       this.y += this.vy * dt;
-
       if (this.x - this.r < 0) { this.x = this.r; this.vx = Math.abs(this.vx); }
       else if (this.x + this.r > gameState.canvasWidth) { this.x = gameState.canvasWidth - this.r; this.vx = -Math.abs(this.vx); }
-
       if (this.y - this.r < 0) { this.y = this.r; this.vy = Math.abs(this.vy); }
     }
     draw(ctx) {
@@ -231,6 +229,13 @@
         { key: 'spd', label: 'Speed', getCost: s => Math.floor(40 * Math.pow(1.4, s.speedLevel)) },
       ];
     }
+    getUpgradeLevel(key, state) {
+      // Upgrade keys don't all match the state property names.
+      // Damage is stored as damageLevel; Balls is the number purchased beyond the first ball.
+      if (key === 'dmg') return state.damageLevel;
+      if (key === 'multi') return Math.max(0, state.ballsPerShot - 1);
+      return state[`${key}Level`] || 0;
+    }
     render(state) {
       if (!this.ctx || !this.canvas) return;
       const dpr = window.devicePixelRatio || 1;
@@ -272,7 +277,7 @@
         this.ctx.strokeStyle = afford ? 'rgba(0,242,255,.5)' : 'rgba(255,255,255,.15)';
         this.ctx.lineWidth = afford ? 1.5 : 0.8; this.ctx.stroke();
 
-        const level = state[def.key + 'Level'] || 0;
+        const level = this.getUpgradeLevel(def.key, state);
         this.ctx.fillStyle = afford ? '#fff' : '#999';
         this.ctx.font = `bold ${13 * scale}px Inter`; this.ctx.textAlign = 'left'; this.ctx.textBaseline = 'top';
         this.ctx.fillText(level > 0 && def.labelAlt ? def.labelAlt : def.label, rect.x + 10, rect.y + 4);
