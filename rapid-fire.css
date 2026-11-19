@@ -40,20 +40,20 @@
   filter: none;
 }
 
-/* Raise the complete control dock slightly. */
+/* Raise the complete control dock a little. */
 .bottom-bar {
-  bottom: max(36px, calc(env(safe-area-inset-bottom) + 28px));
+  bottom: max(40px, calc(env(safe-area-inset-bottom) + 32px));
 }
 
 @media (max-width: 900px) {
   .bottom-bar {
-    bottom: max(32px, calc(env(safe-area-inset-bottom) + 26px));
+    bottom: max(36px, calc(env(safe-area-inset-bottom) + 30px));
   }
 }
 
 @media (max-width: 520px) {
   .bottom-bar {
-    bottom: max(28px, calc(env(safe-area-inset-bottom) + 24px));
+    bottom: max(32px, calc(env(safe-area-inset-bottom) + 28px));
   }
 }
 
