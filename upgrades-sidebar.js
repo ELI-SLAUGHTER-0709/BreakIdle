@@ -4,39 +4,39 @@
   document.getElementById('leftPanel')?.remove();
   document.getElementById('leftCanvas')?.remove();
 
-  const toggle = document.getElementById('shopToggle');
   const shop = document.getElementById('shop');
-  if (!toggle || !shop) return;
+  const railButtons = [...document.querySelectorAll('.right-action-rail .rail-action')];
+  if (!shop || railButtons.length === 0) return;
 
-  const main = document.querySelector('main');
-  const canvasWrap = document.querySelector('.canvas-wrap');
+  let activeButton = null;
 
-  function updateCanvasControlsPosition() {
-    if (!canvasWrap) return;
-    const rect = canvasWrap.getBoundingClientRect();
-    document.documentElement.style.setProperty('--canvas-center', `${rect.left + rect.width / 2}px`);
-    document.documentElement.style.setProperty('--canvas-controls-width', `${Math.max(280, rect.width)}px`);
-  }
-
-  function setOpen(open) {
+  function setOpen(open, button = activeButton) {
     shop.classList.toggle('open', open);
     shop.setAttribute('aria-hidden', String(!open));
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close upgrades' : 'Open upgrades');
-    toggle.title = open ? 'Close upgrades' : 'Upgrades';
+    activeButton = open ? button : null;
 
-    requestAnimationFrame(() => {
-      updateCanvasControlsPosition();
-      // main.js listens for resize to resize and redraw both canvases after
-      // the drawer has entered or left the layout.
-      window.dispatchEvent(new Event('resize'));
+    railButtons.forEach(railButton => {
+      const isActive = open && railButton === activeButton;
+      railButton.classList.toggle('active', isActive);
+      railButton.setAttribute('aria-expanded', String(isActive));
+      railButton.setAttribute('aria-label', isActive ? 'Close menu' : `Open ${railButton.dataset.menuLabel || 'menu'}`);
+      railButton.title = isActive ? 'Close menu' : (railButton.dataset.menuLabel || 'Open menu');
     });
   }
 
-  toggle.addEventListener('click', () => setOpen(!shop.classList.contains('open')));
+  railButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      if (button === activeButton && shop.classList.contains('open')) {
+        setOpen(false);
+      } else {
+        setOpen(true, button);
+      }
+    });
+  });
 
   document.addEventListener('pointerdown', event => {
-    if (shop.classList.contains('open') && !shop.contains(event.target) && !toggle.contains(event.target)) {
+    const clickedRail = railButtons.some(button => button.contains(event.target));
+    if (shop.classList.contains('open') && !shop.contains(event.target) && !clickedRail) {
       setOpen(false);
     }
   });
@@ -44,13 +44,7 @@
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && shop.classList.contains('open')) {
       setOpen(false);
-      toggle.focus();
+      activeButton?.focus();
     }
   });
-
-  window.addEventListener('resize', updateCanvasControlsPosition);
-  if (window.ResizeObserver && main) new ResizeObserver(updateCanvasControlsPosition).observe(main);
-  if (window.ResizeObserver && canvasWrap) new ResizeObserver(updateCanvasControlsPosition).observe(canvasWrap);
-  window.addEventListener('load', updateCanvasControlsPosition);
-  requestAnimationFrame(updateCanvasControlsPosition);
 })();
