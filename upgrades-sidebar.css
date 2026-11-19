@@ -63,7 +63,7 @@ main {
   transition: width 180ms ease;
 }
 
-/* A blank drawer that slides out to the left from the action rail. */
+/* The drawer slides left from the rail. It is blank for placeholder actions. */
 .side-panel.shop {
   display: block;
   position: fixed;
@@ -96,10 +96,10 @@ main {
   transition: transform 200ms ease, opacity 160ms ease, visibility 0s;
 }
 
-/* Keep the existing shop canvas/game logic available but show an empty menu. */
 .side-panel.shop .side-canvas { visibility: hidden; }
+.side-panel.shop.upgrades-active .side-canvas { visibility: visible; }
 
-/* These controls retain the original style.css positioning and sizing. */
+/* Preserve the classic bottom control placement and widths. */
 .bottom-bar,
 .rapid-cooldown-container {
   left: 50%;
