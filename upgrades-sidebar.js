@@ -25,6 +25,16 @@
       railButton.setAttribute('aria-label', isActive ? `Close ${label}` : `Open ${label}`);
       railButton.title = isActive ? `Close ${label}` : `Open ${label}`;
     });
+
+    if (open && button === upgradesButton) {
+      // Give the drawer its final size, then trigger the game's existing
+      // canvas resize/render logic so the upgrades are visible immediately.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.dispatchEvent(new Event('resize'));
+        });
+      });
+    }
   }
 
   railButtons.forEach(button => {
