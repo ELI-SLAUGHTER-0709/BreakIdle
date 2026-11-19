@@ -11,21 +11,19 @@
     label.className = 'rapid-button-label';
     label.textContent = 'RAPID';
     button.replaceChildren(label);
-    button.setAttribute('aria-label', 'Rapid fire');
 
     function syncProgress() {
       const progress = Math.max(0, Math.min(100, Number.parseFloat(progressBar.style.width) || 0));
       const ready = progress >= 100 && !button.disabled;
-      button.style.setProperty('--rapid-progress', String(progress / 100));
-      button.classList.toggle('rapid-ready', ready);
-      button.setAttribute('aria-valuenow', String(Math.round(progress)));
+      const remaining = cooldownText?.textContent.trim();
+      const accessibleState = ready
+        ? 'Rapid fire ready'
+        : `Rapid fire cooling down${remaining && remaining !== 'READY' ? `, ${remaining} remaining` : ''}`;
 
-      if (cooldownText) {
-        const remaining = cooldownText.textContent.trim();
-        const message = ready ? 'Rapid fire ready' : `Rapid fire cooldown: ${remaining} remaining`;
-        button.setAttribute('aria-valuetext', message);
-        button.title = message;
-      }
+      button.style.setProperty('--rapid-progress', `${progress}%`);
+      button.classList.toggle('rapid-ready', ready);
+      button.setAttribute('aria-label', accessibleState);
+      button.title = accessibleState;
     }
 
     syncProgress();
@@ -46,8 +44,7 @@
     }
   }
 
-  // main.js creates the Rapid button during DOMContentLoaded, so initialize
-  // after its handler has populated the controls.
+  // main.js creates the button from its DOMContentLoaded handler.
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeRapidButton, { once: true });
   } else {
