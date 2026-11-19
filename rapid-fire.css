@@ -1,0 +1,48 @@
+/* The cooldown is represented by the fill inside the RAPID button. */
+.rapid-cooldown-container {
+  display: none !important;
+}
+
+#useRapidBottom {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #142131;
+  transition: filter 140ms ease, opacity 140ms ease;
+}
+
+#useRapidBottom::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0 auto 0 0;
+  width: var(--rapid-progress, 0%);
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--power-blue-start), var(--power-blue-end));
+  transition: width 180ms linear;
+  pointer-events: none;
+}
+
+#useRapidBottom .rapid-button-label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Keep it visibly dim and unavailable until its cooldown is complete. */
+#useRapidBottom:disabled {
+  opacity: .58;
+  filter: brightness(.72) saturate(.65);
+  cursor: not-allowed;
+}
+
+#useRapidBottom.rapid-ready {
+  opacity: 1;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #useRapidBottom,
+  #useRapidBottom::before {
+    transition: none;
+  }
+}
