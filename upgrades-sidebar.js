@@ -6,21 +6,24 @@
 
   const shop = document.getElementById('shop');
   const railButtons = [...document.querySelectorAll('.right-action-rail .rail-action')];
+  const upgradesButton = document.getElementById('shopToggle');
   if (!shop || railButtons.length === 0) return;
 
   let activeButton = null;
 
   function setOpen(open, button = activeButton) {
-    shop.classList.toggle('open', open);
-    shop.setAttribute('aria-hidden', String(!open));
     activeButton = open ? button : null;
+    shop.classList.toggle('open', open);
+    shop.classList.toggle('upgrades-active', open && button === upgradesButton);
+    shop.setAttribute('aria-hidden', String(!open));
 
     railButtons.forEach(railButton => {
       const isActive = open && railButton === activeButton;
+      const label = railButton.dataset.menuLabel || railButton.querySelector('.rail-action-label')?.textContent.trim() || 'menu';
       railButton.classList.toggle('active', isActive);
       railButton.setAttribute('aria-expanded', String(isActive));
-      railButton.setAttribute('aria-label', isActive ? 'Close menu' : `Open ${railButton.dataset.menuLabel || 'menu'}`);
-      railButton.title = isActive ? 'Close menu' : (railButton.dataset.menuLabel || 'Open menu');
+      railButton.setAttribute('aria-label', isActive ? `Close ${label}` : `Open ${label}`);
+      railButton.title = isActive ? `Close ${label}` : `Open ${label}`;
     });
   }
 
@@ -43,8 +46,9 @@
 
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && shop.classList.contains('open')) {
+      const returnFocusTo = activeButton;
       setOpen(false);
-      activeButton?.focus();
+      returnFocusTo?.focus();
     }
   });
 })();
