@@ -44,7 +44,7 @@ header {
 }
 .header-left { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
 .header-left h1 { margin: 0; color: var(--accent); font-size: 1.05rem; }
-.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: linear-gradient(180deg,#1a1d20,#101214); color: var(--text); cursor: pointer; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: linear-gradient(180deg,#20262b,#11161a); color: var(--text); cursor: pointer; }
 .icon-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
 button:focus-visible, canvas:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 #shopToggle { display: none; }
@@ -103,7 +103,7 @@ main {
   justify-content: center;
   overflow: hidden;
   padding: 12px 12px calc(var(--controls-height) + 12px);
-  background: linear-gradient(135deg,rgba(255,255,255,.012),transparent);
+  background: linear-gradient(135deg, #34383d, #202428 55%, #111416);
 }
 .canvas-wrap {
   width: min(800px, calc(100vw - 720px));
@@ -115,7 +115,7 @@ main {
   justify-content: center;
 }
 canvas#game { display: block; width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,.12); border: 1px solid rgba(255,255,255,.02); background: #0a0a0c; }
-.side-panel { width: 340px; max-width: 340px; height: 520px; max-height: 100%; flex: 0 1 340px; position: relative; border-radius: 10px; overflow: hidden; background: linear-gradient(180deg,var(--panel),var(--panel-2)); border: 1px solid rgba(255,255,255,.04); }
+.side-panel { width: 340px; max-width: 340px; height: 520px; max-height: 100%; flex: 0 1 340px; position: relative; border-radius: 10px; overflow: hidden; background: linear-gradient(180deg,var(--panel),var(--panel-2)); }
 .left-panel { order: -1; }
 .shop { order: 1; }
 .side-canvas { position: relative; width: 100%; height: 100%; display: block; }
@@ -145,7 +145,7 @@ canvas#game { display: block; width: 100%; height: 100%; border-radius: 10px; bo
 .bottom-bar button:hover { filter: brightness(1.12); }
 .bottom-bar button:disabled { filter: grayscale(.4); opacity: .55; cursor: not-allowed; }
 
-.rapid-cooldown-container { position: fixed; z-index: 998; left: 50%; bottom: max(76px, calc(env(safe-area-inset-bottom) + 76px)); transform: translateX(-50%); width: min(980px,calc(100% - 24px)); height: 34px; align-items: center; gap: 10px; box-sizing: border-box; padding: 6px 10px; border: 1px solid rgba(255,255,255,.04); border-radius: 10px; background: rgba(11,13,15,.94); }
+.rapid-cooldown-container { position: fixed; z-index: 998; left: 50%; bottom: max(76px, calc(env(safe-area-inset-bottom) + 76px)); transform: translateX(-50%); width: min(980px,calc(100% - 24px)); }
 .rapid-cooldown-container:not([hidden]) { display: flex; }
 .rapid-label { color: var(--muted); font-size: .92rem; min-width: 160px; }
 .rapid-bar-wrap { flex: 1; height: 10px; background: rgba(0,0,0,.35); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,.02); }
