@@ -1,15 +1,6 @@
-/* Keep cooldown feedback inside RAPID; never render a separate cooldown bar. */
+/* The cooldown is represented by the fill inside the RAPID button. */
 .rapid-cooldown-container {
   display: none !important;
-}
-
-/* Float the three existing controls in the clear space below the game canvas. */
-.bottom-bar {
-  bottom: max(66px, calc(env(safe-area-inset-bottom) + 56px));
-}
-
-.bottom-center {
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 1.35fr) minmax(0, 1fr);
 }
 
 #useRapidBottom {
@@ -17,6 +8,7 @@
   isolation: isolate;
   overflow: hidden;
   background: #142131;
+  transition: filter 140ms ease, opacity 140ms ease;
 }
 
 #useRapidBottom::before {
@@ -36,6 +28,7 @@
   z-index: 1;
 }
 
+/* Keep it visibly dim and unavailable until its cooldown is complete. */
 #useRapidBottom:disabled {
   opacity: .58;
   filter: brightness(.72) saturate(.65);
@@ -47,19 +40,25 @@
   filter: none;
 }
 
+/* Lower the complete control dock closer to the bottom edge. */
+.bottom-bar {
+  bottom: max(28px, calc(env(safe-area-inset-bottom) + 20px));
+}
+
 @media (max-width: 900px) {
   .bottom-bar {
-    bottom: max(62px, calc(env(safe-area-inset-bottom) + 52px));
+    bottom: max(24px, calc(env(safe-area-inset-bottom) + 18px));
   }
 }
 
 @media (max-width: 520px) {
   .bottom-bar {
-    bottom: max(58px, calc(env(safe-area-inset-bottom) + 48px));
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 16px));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #useRapidBottom,
   #useRapidBottom::before {
     transition: none;
   }
