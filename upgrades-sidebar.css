@@ -92,29 +92,23 @@ main {
 }
 
 .side-panel.shop .side-canvas { width: 100%; height: 100%; }
-
 .rail-action-primary[aria-expanded="true"] {
   border-color: rgba(255,204,77,.55);
   background: linear-gradient(180deg,#35312a,#171918);
 }
 
-/* Center the control dock under the actual game canvas. */
 .bottom-bar,
 .rapid-cooldown-container {
   left: var(--canvas-center, 50%);
   width: var(--canvas-controls-width, min(980px, calc(100% - 24px)));
 }
-
 .bottom-bar { transform: translateX(-50%); }
 .rapid-cooldown-container { transform: translateX(-50%); }
 
 @media (max-width: 900px) {
-  main {
-    padding: 8px 78px calc(var(--controls-height) + 16px) 8px;
-  }
+  main { padding: 8px 78px calc(var(--controls-height) + 16px) 8px; }
   .right-action-rail { width: 68px; padding-inline: 5px; }
-  .rail-action,
-  #shopToggle.rail-action { width: 58px; }
+  .rail-action, #shopToggle.rail-action { width: 58px; }
   .canvas-wrap { width: 100%; min-width: 0; }
   .side-panel.shop.open {
     position: absolute;
@@ -130,14 +124,11 @@ main {
 @media (max-width: 520px) {
   main { padding-right: 66px; }
   .right-action-rail { width: 58px; }
-  .rail-action,
-  #shopToggle.rail-action { width: 50px; min-height: 54px; }
+  .rail-action, #shopToggle.rail-action { width: 50px; min-height: 54px; }
   .rail-action-label { max-width: 46px; font-size: .62rem; }
-  .bottom-bar,
-  .rapid-cooldown-container { width: var(--canvas-controls-width, calc(100% - 12px)); }
+  .bottom-bar, .rapid-cooldown-container { width: var(--canvas-controls-width, calc(100% - 12px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .side-panel.shop,
-  .canvas-wrap { transition: none; }
+  .side-panel.shop, .canvas-wrap { transition: none; }
 }
