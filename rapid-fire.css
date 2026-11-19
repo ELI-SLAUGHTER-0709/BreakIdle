@@ -5,7 +5,7 @@
 
 /* Float the three existing controls in the clear space below the game canvas. */
 .bottom-bar {
-  bottom: max(94px, calc(env(safe-area-inset-bottom) + 82px));
+  bottom: max(66px, calc(env(safe-area-inset-bottom) + 56px));
 }
 
 .bottom-center {
@@ -49,13 +49,13 @@
 
 @media (max-width: 900px) {
   .bottom-bar {
-    bottom: max(88px, calc(env(safe-area-inset-bottom) + 76px));
+    bottom: max(62px, calc(env(safe-area-inset-bottom) + 52px));
   }
 }
 
 @media (max-width: 520px) {
   .bottom-bar {
-    bottom: max(82px, calc(env(safe-area-inset-bottom) + 70px));
+    bottom: max(58px, calc(env(safe-area-inset-bottom) + 48px));
   }
 }
 
