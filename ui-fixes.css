@@ -1,0 +1,147 @@
+/* Responsive UI fixes for BreakIdle */
+:root {
+  --viewport-height: 100dvh;
+}
+
+html,
+body {
+  height: 100%;
+  height: var(--viewport-height, 100dvh);
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+.icon-btn,
+.rail-action {
+  touch-action: manipulation;
+}
+
+canvas {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+canvas#game {
+  touch-action: none;
+}
+
+.settings-menu {
+  max-height: calc(var(--viewport-height, 100dvh) - var(--header-height) - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.bottom-bar button,
+.rail-action,
+.settings-action,
+.settings-close {
+  min-height: 44px;
+}
+
+@media (max-width: 900px) {
+  header {
+    height: var(--header-height);
+  }
+
+  .header-left h1 {
+    max-width: 86px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  main {
+    min-height: 0;
+  }
+
+  .canvas-wrap {
+    width: 100%;
+    max-height: calc(var(--viewport-height, 100dvh) - var(--header-height) - var(--footer-height) - var(--controls-height) - 24px);
+  }
+
+  .side-panel.shop.open {
+    left: 8px;
+    right: 76px;
+    width: auto;
+    max-width: 420px;
+    height: auto;
+  }
+
+  .bottom-bar {
+    max-width: calc(100vw - 82px);
+  }
+
+  .bottom-center {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 520px) {
+  .header-left h1 {
+    max-width: 74px;
+    font-size: .95rem;
+  }
+
+  #headerStats {
+    max-width: 44%;
+  }
+
+  .level-progress {
+    width: min(120px, 100%);
+  }
+
+  .side-panel.shop.open {
+    right: 66px;
+  }
+
+  .bottom-bar {
+    max-width: calc(100vw - 70px);
+  }
+
+  .bottom-bar button {
+    padding-inline: 4px;
+  }
+
+  .settings-menu {
+    width: min(292px, calc(100vw - 16px));
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  :root {
+    --header-height: 48px;
+    --footer-height: 28px;
+    --controls-height: 58px;
+  }
+
+  header {
+    padding-block: 4px;
+  }
+
+  .settings-menu {
+    max-height: calc(var(--viewport-height, 100dvh) - 56px);
+  }
+
+  main {
+    padding-top: 4px;
+  }
+
+  .bottom-bar {
+    height: 52px;
+  }
+
+  .bottom-bar button {
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-menu,
+  .bottom-bar,
+  .rail-action {
+    scroll-behavior: auto;
+  }
+}
