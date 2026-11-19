@@ -7,12 +7,12 @@
   <title>BreakIdle</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="rapid-fire.css">
+  <link rel="stylesheet" href="upgrades-sidebar.css">
 </head>
 <body>
   <header>
     <div class="header-left">
       <h1>BreakIdle</h1>
-      <button id="shopToggle" class="icon-btn" type="button" aria-label="Toggle shop" aria-controls="shop" aria-expanded="true">☰</button>
     </div>
     <div class="stats" id="headerStats"></div>
     <div class="settings-wrap">
@@ -39,9 +39,13 @@
   </header>
 
   <main>
-    <aside class="side-panel left-panel" id="leftPanel" aria-hidden="true"><canvas id="leftCanvas" class="side-canvas" aria-label="Left panel canvas"></canvas></aside>
+    <aside class="upgrade-sidebar" aria-label="Upgrade navigation">
+      <button id="shopToggle" class="icon-btn upgrade-toggle" type="button" aria-label="Open upgrades" aria-controls="shop" aria-expanded="false" title="Upgrades">
+        <span aria-hidden="true">⬆</span>
+      </button>
+    </aside>
     <div class="canvas-wrap"><canvas id="game" width="800" height="520" aria-label="BreakIdle game canvas"></canvas></div>
-    <aside class="side-panel shop" id="shop" aria-label="Upgrade shop"><canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas></aside>
+    <aside class="side-panel shop" id="shop" aria-label="Upgrade shop" aria-hidden="true"><canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas></aside>
   </main>
 
   <footer>Created By - Eli Slaughter</footer>
@@ -54,5 +58,6 @@
   <script src="main.js"></script>
   <script src="settings.js"></script>
   <script src="rapid-fire-ui.js"></script>
+  <script src="upgrades-sidebar.js"></script>
 </body>
 </html>
