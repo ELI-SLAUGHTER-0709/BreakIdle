@@ -110,14 +110,20 @@ main {
   .right-action-rail { width: 68px; padding-inline: 5px; }
   .rail-action, #shopToggle.rail-action { width: 58px; }
   .canvas-wrap { width: 100%; min-width: 0; }
+  /* style.css hides the shop at this breakpoint; explicitly restore it when open. */
   .side-panel.shop.open {
-    position: absolute;
-    z-index: 300;
-    right: 68px;
-    top: var(--header-height);
-    bottom: var(--footer-height);
+    display: block;
+    position: fixed;
+    z-index: 1300;
+    left: 8px;
+    right: 76px;
+    top: calc(var(--header-height) + 8px);
+    bottom: calc(var(--footer-height) + 8px);
+    width: auto;
+    max-width: none;
     height: auto;
     max-height: none;
+    flex: none;
   }
 }
 
@@ -127,6 +133,7 @@ main {
   .rail-action, #shopToggle.rail-action { width: 50px; min-height: 54px; }
   .rail-action-label { max-width: 46px; font-size: .62rem; }
   .bottom-bar, .rapid-cooldown-container { width: var(--canvas-controls-width, calc(100% - 12px)); }
+  .side-panel.shop.open { right: 66px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

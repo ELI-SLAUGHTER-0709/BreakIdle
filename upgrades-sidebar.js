@@ -24,8 +24,11 @@
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close upgrades' : 'Open upgrades');
     toggle.title = open ? 'Close upgrades' : 'Upgrades';
+
     requestAnimationFrame(() => {
       updateCanvasControlsPosition();
+      // main.js listens for resize to resize and redraw both canvases after
+      // the drawer has entered or left the layout.
       window.dispatchEvent(new Event('resize'));
     });
   }
@@ -33,7 +36,9 @@
   toggle.addEventListener('click', () => setOpen(!shop.classList.contains('open')));
 
   document.addEventListener('pointerdown', event => {
-    if (shop.classList.contains('open') && !shop.contains(event.target) && !toggle.contains(event.target)) setOpen(false);
+    if (shop.classList.contains('open') && !shop.contains(event.target) && !toggle.contains(event.target)) {
+      setOpen(false);
+    }
   });
 
   document.addEventListener('keydown', event => {

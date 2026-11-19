@@ -13,36 +13,12 @@
   const gameCanvas = document.getElementById('game');
   const shopCanvas = document.getElementById('shopCanvas');
 
-  if (gameCanvas) {
-    gameCanvas.tabIndex = 0;
-  }
+  if (gameCanvas) gameCanvas.tabIndex = 0;
+  if (shopCanvas) shopCanvas.tabIndex = 0;
 
-  if (shopCanvas) {
-    shopCanvas.tabIndex = 0;
-  }
-
-  // Keep keyboard controls from intercepting keys used in settings/buttons.
-  document.addEventListener('keydown', event => {
-    if (event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement ||
-        event.target instanceof HTMLSelectElement) {
-      return;
-    }
-
-    if (event.key === 'Escape') {
-      const shop = document.getElementById('shop');
-      const toggle = document.getElementById('shopToggle');
-      if (shop?.classList.contains('open')) {
-        shop.classList.remove('open');
-        shop.setAttribute('aria-hidden', 'true');
-        toggle?.setAttribute('aria-expanded', 'false');
-        toggle?.focus();
-      }
-    }
-  }, true);
-
-  // Make the shop canvas redraw after mobile layout changes instead of
-  // retaining the dimensions assigned while it was hidden.
+  // main.js handles keyboard gameplay controls; don't intercept keys used by
+  // editable controls. Escape handling for the upgrades drawer lives in
+  // upgrades-sidebar.js so that its button state and accessibility stay synced.
   window.addEventListener('resize', () => {
     window.dispatchEvent(new Event('breakidle-layout-change'));
   });
