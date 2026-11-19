@@ -1,0 +1,44 @@
+/* Hide the standalone cooldown display; its progress is shown in the RAPID button. */
+.rapid-cooldown-container {
+  display: none !important;
+}
+
+#useRapidBottom {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #142131;
+  transition: filter 140ms ease;
+}
+
+#useRapidBottom::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--power-blue-start), var(--power-blue-end));
+  transform: scaleX(var(--rapid-progress, 1));
+  transform-origin: left center;
+  transition: transform 180ms linear;
+  pointer-events: none;
+}
+
+#useRapidBottom .rapid-button-label {
+  position: relative;
+  z-index: 1;
+}
+
+#useRapidBottom:disabled {
+  opacity: 1;
+  filter: saturate(.72);
+  cursor: not-allowed;
+}
+
+#useRapidBottom:disabled .rapid-button-label {
+  text-shadow: 0 1px 3px rgba(0,0,0,.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #useRapidBottom::before { transition: none; }
+}
