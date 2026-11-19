@@ -1,58 +1,90 @@
-/* Give the playfield the space previously occupied by the unused left canvas. */
+/* Right-side action rail in the unused blank area. */
 main {
-  gap: 14px;
-  padding-right: 68px;
+  padding-right: 92px;
 }
 
-/* Keep the upgrade shortcut on the right, matching the settings icon button. */
-.upgrade-sidebar {
+.right-action-rail {
   position: fixed;
   z-index: 1200;
-  top: 50%;
-  right: 14px;
-  width: auto;
-  height: auto;
-  flex: none;
-  transform: translateY(-50%);
+  top: var(--header-height);
+  right: 0;
+  bottom: var(--footer-height);
+  width: 82px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 8px;
+  border-left: 1px solid rgba(255,255,255,.06);
+  background: #050505;
 }
 
-.upgrade-toggle {
-  width: 46px;
-  height: 46px;
-  border-color: rgba(255,255,255,.12);
+.rail-action {
+  width: 66px;
+  min-height: 58px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 10px;
   background: linear-gradient(180deg,#20262b,#11161a);
-  color: var(--accent);
-  font-size: 1.25rem;
-  box-shadow: none;
+  color: var(--text);
+  font: 700 .68rem/1 system-ui, sans-serif;
+  cursor: pointer;
 }
 
-.canvas-wrap {
-  flex: 1 1 0;
-  width: auto;
-  min-width: 0;
-  max-width: none;
-  max-height: 100%;
-  aspect-ratio: 800 / 520;
+.rail-action-primary {
+  color: var(--accent);
+}
+
+.rail-action-icon {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.rail-action-label {
+  max-width: 58px;
+  white-space: normal;
+  text-align: center;
+}
+
+.rail-action:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+}
+
+.rail-action:not(:disabled):hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.rail-action:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .side-panel.shop {
   position: fixed;
   z-index: 1350;
   top: var(--header-height);
-  right: 0;
+  right: 82px;
   bottom: var(--footer-height);
-  width: min(340px, calc(100vw - 64px));
+  width: min(340px, calc(100vw - 82px));
   max-width: none;
   height: auto;
   max-height: none;
   flex: none;
   border: 1px solid rgba(255,255,255,.12);
-  border-right: 0;
   border-radius: 14px 0 0 14px;
   background: linear-gradient(180deg, #151a1e, #0b0e10);
   box-shadow: -16px 0 42px rgba(0,0,0,.42);
-  transform: translateX(105%);
+  transform: translateX(calc(100% + 82px));
   transition: transform 180ms ease;
 }
 
@@ -61,53 +93,40 @@ main {
   transform: translateX(0);
 }
 
-.side-panel.shop .side-canvas {
-  width: 100%;
-  height: 100%;
-}
-
-@media (max-width: 1200px) {
-  .canvas-wrap {
-    width: auto;
-    flex: 1 1 0;
-  }
+.canvas-wrap {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  max-height: 100%;
 }
 
 @media (max-width: 900px) {
   main {
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    padding-right: 58px;
+    padding-right: 78px;
   }
 
-  .upgrade-sidebar {
-    right: 8px;
+  .right-action-rail {
+    width: 68px;
+    padding-inline: 5px;
   }
 
-  .canvas-wrap {
-    width: min(800px, 100%);
-    max-width: 800px;
-    min-width: 0;
-    max-height: none;
-    flex: 0 0 auto;
+  .rail-action {
+    width: 58px;
   }
 
   .side-panel.shop {
-    top: var(--header-height);
-    right: 0;
-    bottom: var(--footer-height);
-    width: min(340px, calc(100vw - 58px));
-    height: auto;
-    max-height: none;
+    right: 68px;
+    width: min(340px, calc(100vw - 68px));
   }
 }
 
 @media (max-width: 520px) {
-  main { padding-right: 52px; }
-  .upgrade-sidebar { right: 5px; }
-  .upgrade-toggle { width: 40px; height: 42px; }
+  main { padding-right: 66px; }
+  .right-action-rail { width: 58px; }
+  .rail-action { width: 50px; min-height: 54px; }
+  .rail-action-label { max-width: 46px; font-size: .62rem; }
+  .side-panel.shop { right: 58px; width: calc(100vw - 58px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

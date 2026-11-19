@@ -39,14 +39,24 @@
   </header>
 
   <main>
-    <aside class="upgrade-sidebar" aria-label="Upgrade navigation">
-      <button id="shopToggle" class="icon-btn upgrade-toggle" type="button" aria-label="Open upgrades" aria-controls="shop" aria-expanded="false" title="Upgrades">
-        <span aria-hidden="true">⬆</span>
-      </button>
-    </aside>
     <div class="canvas-wrap"><canvas id="game" width="800" height="520" aria-label="BreakIdle game canvas"></canvas></div>
     <aside class="side-panel shop" id="shop" aria-label="Upgrade shop" aria-hidden="true"><canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas></aside>
   </main>
+
+  <aside class="right-action-rail" aria-label="Game actions">
+    <button id="shopToggle" class="rail-action rail-action-primary" type="button" aria-label="Open upgrades" aria-controls="shop" aria-expanded="false">
+      <span class="rail-action-icon" aria-hidden="true">⬆</span>
+      <span class="rail-action-label">Upgrades</span>
+    </button>
+    <button class="rail-action" type="button" disabled aria-label="More actions coming soon">
+      <span class="rail-action-icon" aria-hidden="true">◆</span>
+      <span class="rail-action-label">Coming Soon</span>
+    </button>
+    <button class="rail-action" type="button" disabled aria-label="More actions coming soon">
+      <span class="rail-action-icon" aria-hidden="true">◇</span>
+      <span class="rail-action-label">Coming Soon</span>
+    </button>
+  </aside>
 
   <footer>Created By - Eli Slaughter</footer>
   <div class="bottom-bar" id="bottomBar" role="toolbar" aria-label="Game controls"><div class="bottom-left"></div><div class="bottom-center"></div><div class="bottom-right"></div></div>
