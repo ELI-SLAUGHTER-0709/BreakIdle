@@ -7,13 +7,11 @@
   <title>BreakIdle</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="rapid-fire.css">
+  <link rel="stylesheet" href="upgrades-sidebar.css">
 </head>
 <body>
   <header>
-    <div class="header-left">
-      <h1>BreakIdle</h1>
-      <button id="shopToggle" class="icon-btn" type="button" aria-label="Toggle shop" aria-controls="shop" aria-expanded="true">☰</button>
-    </div>
+    <div class="header-left"><h1>BreakIdle</h1></div>
     <div class="stats" id="headerStats"></div>
     <div class="settings-wrap">
       <button id="settingsToggle" class="icon-btn settings-toggle" type="button" aria-label="Settings" aria-controls="settingsMenu" aria-expanded="false" title="Settings">⚙</button>
@@ -39,10 +37,20 @@
   </header>
 
   <main>
-    <aside class="side-panel left-panel" id="leftPanel" aria-hidden="true"><canvas id="leftCanvas" class="side-canvas" aria-label="Left panel canvas"></canvas></aside>
     <div class="canvas-wrap"><canvas id="game" width="800" height="520" aria-label="BreakIdle game canvas"></canvas></div>
-    <aside class="side-panel shop" id="shop" aria-label="Upgrade shop"><canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas></aside>
+    <aside class="side-panel shop" id="shop" aria-label="Upgrade shop" aria-hidden="true">
+      <canvas id="shopCanvas" class="side-canvas" aria-label="Shop upgrade panel"></canvas>
+    </aside>
   </main>
+
+  <aside class="right-action-rail" aria-label="Game actions">
+    <button id="shopToggle" class="rail-action rail-action-primary" type="button" aria-label="Open upgrades" aria-controls="shop" aria-expanded="false">
+      <span class="rail-action-icon" aria-hidden="true">⬆</span>
+      <span class="rail-action-label">Upgrades</span>
+    </button>
+    <button class="rail-action" type="button" disabled><span class="rail-action-icon" aria-hidden="true">◆</span><span class="rail-action-label">Coming Soon</span></button>
+    <button class="rail-action" type="button" disabled><span class="rail-action-icon" aria-hidden="true">◇</span><span class="rail-action-label">Coming Soon</span></button>
+  </aside>
 
   <footer>Created By - Eli Slaughter</footer>
   <div class="bottom-bar" id="bottomBar" role="toolbar" aria-label="Game controls"><div class="bottom-left"></div><div class="bottom-center"></div><div class="bottom-right"></div></div>
@@ -54,5 +62,6 @@
   <script src="main.js"></script>
   <script src="settings.js"></script>
   <script src="rapid-fire-ui.js"></script>
+  <script src="upgrades-sidebar.js"></script>
 </body>
 </html>
