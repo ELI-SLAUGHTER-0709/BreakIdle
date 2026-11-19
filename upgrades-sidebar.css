@@ -1,26 +1,30 @@
 /* Give the playfield the space previously occupied by the unused left canvas. */
 main {
   gap: 14px;
-  padding-left: 14px;
+  padding-right: 68px;
 }
 
+/* Keep the upgrade shortcut on the right, matching the settings icon button. */
 .upgrade-sidebar {
-  flex: 0 0 48px;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed;
+  z-index: 1200;
+  top: 50%;
+  right: 14px;
+  width: auto;
+  height: auto;
+  flex: none;
+  transform: translateY(-50%);
 }
 
 .upgrade-toggle {
   width: 46px;
   height: 46px;
-  border-color: rgba(255,255,255,.16);
-  border-radius: 14px;
-  background: linear-gradient(180deg, #292f35, #171c20);
-  color: #ffcc4d;
+  border-color: rgba(255,255,255,.12);
+  border-radius: 10px;
+  background: linear-gradient(180deg,#20262b,#11161a);
+  color: var(--accent);
   font-size: 1.25rem;
-  box-shadow: 0 8px 22px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
+  box-shadow: none;
 }
 
 .canvas-wrap {
@@ -75,17 +79,11 @@ main {
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
-    padding-left: 58px;
+    padding-right: 58px;
   }
 
   .upgrade-sidebar {
-    position: fixed;
-    z-index: 1200;
-    left: 8px;
-    top: 50%;
-    width: auto;
-    height: auto;
-    transform: translateY(-50%);
+    right: 8px;
   }
 
   .canvas-wrap {
@@ -107,8 +105,8 @@ main {
 }
 
 @media (max-width: 520px) {
-  main { padding-left: 52px; }
-  .upgrade-sidebar { left: 5px; }
+  main { padding-right: 52px; }
+  .upgrade-sidebar { right: 5px; }
   .upgrade-toggle { width: 40px; height: 42px; }
 }
 
