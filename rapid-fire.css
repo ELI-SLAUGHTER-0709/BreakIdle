@@ -40,20 +40,20 @@
   filter: none;
 }
 
-/* Raise the complete control dock a little more. */
+/* Nudge the bottom control buttons down slightly. */
 .bottom-bar {
-  bottom: max(56px, calc(env(safe-area-inset-bottom) + 48px));
+  bottom: max(44px, calc(env(safe-area-inset-bottom) + 36px));
 }
 
 @media (max-width: 900px) {
   .bottom-bar {
-    bottom: max(52px, calc(env(safe-area-inset-bottom) + 46px));
+    bottom: max(40px, calc(env(safe-area-inset-bottom) + 34px));
   }
 }
 
 @media (max-width: 520px) {
   .bottom-bar {
-    bottom: max(48px, calc(env(safe-area-inset-bottom) + 44px));
+    bottom: max(36px, calc(env(safe-area-inset-bottom) + 32px));
   }
 }
 
