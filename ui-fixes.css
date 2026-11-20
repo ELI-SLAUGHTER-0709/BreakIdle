@@ -1,9 +1,20 @@
 /* UI layout fixes */
 
-/* Keep the raised SHOOT control inside the bottom bar and align it consistently. */
+/* Keep the controls level and center the visible button group in the bar. */
 .big-red {
   position: relative;
-  top: -10px;
+  top: 0;
+}
+
+.bottom-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bottom-center button {
+  flex: 0 1 320px;
 }
 
 /* Prevent header stats and the settings control from colliding on narrow screens. */
@@ -26,7 +37,7 @@
   }
 }
 
-/* Make the mobile drawer a contained overlay instead of escaping the viewport. */
+/* Keep the mobile drawer contained between the header, action rail, and footer. */
 @media (max-width: 900px) {
   .side-panel.shop.open {
     position: fixed;
@@ -38,6 +49,15 @@
     width: auto;
     height: auto;
     max-height: none;
+  }
+
+  .bottom-center {
+    gap: 6px;
+  }
+
+  .bottom-center button {
+    flex: 1 1 0;
+    width: auto;
   }
 }
 
