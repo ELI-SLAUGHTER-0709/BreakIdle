@@ -1,4 +1,4 @@
-/* Desktop layout overhaul: keep the game, stats, controls, and sidebar in a clear grid. */
+/* Desktop layout: stable game area, visible sidebar, and centered controls. */
 
 :root {
   --header-height: 64px;
@@ -18,9 +18,7 @@ header {
   padding: 10px 18px;
 }
 
-.header-left h1 {
-  font-size: 1.25rem;
-}
+.header-left h1 { font-size: 1.25rem; }
 
 #headerStats {
   flex: 1;
@@ -34,10 +32,8 @@ header {
 }
 
 main {
-  position: relative;
   display: grid;
-  grid-template-columns: minmax(500px, 800px) minmax(280px, 340px);
-  grid-template-areas: "game shop";
+  grid-template-columns: minmax(430px, 800px) minmax(280px, 340px);
   align-items: center;
   justify-content: center;
   gap: 18px;
@@ -45,28 +41,20 @@ main {
 }
 
 .canvas-wrap {
-  grid-area: game;
-  width: min(800px, calc(100vw - 480px));
-  min-width: 500px;
+  width: 100%;
+  min-width: 430px;
   max-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--controls-height) - 58px);
   aspect-ratio: 800 / 520;
 }
 
-.side-panel.shop {
-  grid-area: shop;
-}
-
-/* The rail stays a compact utility column and never covers the game. */
 .right-action-rail {
   position: fixed;
   z-index: 1200;
   right: 12px;
   top: calc(var(--header-height) + 18px);
-  bottom: calc(var(--footer-height) + var(--controls-height) + 28px);
   width: 58px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   gap: 8px;
 }
 
@@ -86,30 +74,12 @@ main {
   cursor: pointer;
 }
 
-.rail-action-primary {
-  border-color: rgba(255,204,77,.42);
-}
-
+.rail-action-primary { border-color: rgba(255,204,77,.42); }
 .rail-action.active,
-.rail-action:hover {
-  background: #252b30;
-  filter: brightness(1.08);
-}
+.rail-action:hover { background: #252b30; filter: brightness(1.08); }
+.rail-action-icon { font-size: 1.15rem; line-height: 1; }
+.rail-action-label { max-width: 52px; overflow: hidden; text-overflow: ellipsis; font-size: .67rem; white-space: nowrap; }
 
-.rail-action-icon {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
-.rail-action-label {
-  max-width: 52px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: .67rem;
-  white-space: nowrap;
-}
-
-/* Stable control dock under the game instead of floating relative to viewport edges. */
 .bottom-bar {
   left: 50%;
   bottom: calc(max(8px, env(safe-area-inset-bottom)) + var(--footer-height) - 4px);
@@ -126,67 +96,40 @@ main {
   justify-content: center;
 }
 
-.bottom-center button {
-  width: 100%;
-  max-width: none;
-}
+.bottom-center button { width: 100%; max-width: none; }
 
 .rapid-cooldown-container {
   bottom: calc(max(8px, env(safe-area-inset-bottom)) + var(--footer-height) + 68px);
   width: min(720px, calc(100vw - 190px));
 }
 
-footer {
-  height: var(--footer-height);
-  justify-content: flex-start;
-}
-
-@media (max-width: 1200px) and (min-width: 901px) {
-  main {
-    grid-template-columns: minmax(430px, 700px) minmax(260px, 300px);
-  }
-
-  .canvas-wrap {
-    width: min(700px, calc(100vw - 440px));
-    min-width: 430px;
-  }
-
-  #headerStats {
-    gap: 10px;
-  }
-
-  #headerStats > div:not(.level-progress):nth-child(n+5) {
-    display: none;
-  }
-}
+footer { height: var(--footer-height); justify-content: flex-start; }
 
 @media (min-width: 901px) {
   .side-panel.shop {
     position: relative;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    width: min(340px, 100%);
+    inset: auto;
+    display: block;
+    width: 100%;
     height: min(520px, calc(100vh - 210px));
+    max-width: 340px;
     max-height: calc(100vh - 210px);
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 
-  .side-panel.shop:not(.open) {
-    filter: saturate(.78);
-  }
+  #shopToggle { display: none; }
+}
 
-  #shopToggle {
-    display: none;
-  }
+@media (max-width: 1200px) and (min-width: 901px) {
+  main { grid-template-columns: minmax(430px, 700px) minmax(260px, 300px); }
+  #headerStats { gap: 10px; }
+  #headerStats > div:not(.level-progress):nth-child(n+5) { display: none; }
 }
 
 @media (max-width: 900px) {
-  :root {
-    --header-height: 58px;
-  }
+  :root { --header-height: 58px; }
 
   main {
     display: flex;
@@ -196,10 +139,7 @@ footer {
     padding: 10px 68px calc(var(--controls-height) + 12px) 10px;
   }
 
-  .canvas-wrap {
-    width: 100%;
-    min-width: 0;
-  }
+  .canvas-wrap { width: 100%; min-width: 0; }
 
   .bottom-bar,
   .rapid-cooldown-container {
@@ -208,11 +148,6 @@ footer {
     max-width: calc(100% - 92px);
   }
 
-  .bottom-center {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .right-action-rail {
-    right: 8px;
-  }
+  .bottom-center { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .right-action-rail { right: 8px; }
 }
