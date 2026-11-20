@@ -1,143 +1,57 @@
-/* Keep the game and sidebar canvases on a consistent, balanced grid. */
-main {
-  justify-content: flex-start;
-  gap: 16px;
-  padding: 16px 98px calc(var(--controls-height) + 16px) 16px;
-}
-
-.right-action-rail {
+/* Anchor drawers directly beside the action rail instead of letting them sit
+   at the far end of main's flex row. */
+.side-panel.shop,
+.side-panel.shop.open {
   position: fixed;
-  z-index: 1200;
-  top: var(--header-height);
-  right: 0;
-  bottom: var(--footer-height);
-  width: 82px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 8px;
-  border-left: 1px solid rgba(255,255,255,.06);
-  background: rgba(5,5,5,.96);
-}
-
-.rail-action,
-#shopToggle.rail-action {
-  width: 66px;
-  min-height: 58px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 6px 4px;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 10px;
-  background: linear-gradient(180deg,#20262b,#11161a);
-  color: var(--text);
-  font: 700 .68rem/1 system-ui, sans-serif;
-  cursor: pointer;
-  transition: filter 120ms ease, transform 120ms ease, border-color 120ms ease;
-}
-
-.rail-action-primary { color: var(--accent); }
-.rail-action-icon { display: block; font-size: 1.15rem; line-height: 1; }
-.rail-action-label { max-width: 58px; white-space: normal; text-align: center; }
-.rail-action:not(:disabled):hover { filter: brightness(1.12); transform: translateY(-1px); }
-.rail-action:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-.canvas-wrap {
-  order: 0;
-  flex: 1 1 800px;
-  width: auto;
-  min-width: min(280px, 100%);
-  max-width: 800px;
-  max-height: 100%;
-  aspect-ratio: 800 / 520;
-  transition: flex-basis 180ms ease;
-}
-
-.side-panel.shop {
-  order: 1;
-  position: relative;
-  z-index: 200;
-  top: auto;
-  right: auto;
-  bottom: auto;
+  z-index: 1300;
+  top: calc(var(--header-height) + 12px);
+  right: 82px;
+  bottom: calc(var(--footer-height) + 12px);
+  left: auto;
   box-sizing: border-box;
   width: 0;
-  max-width: min(340px, 38vw);
-  height: min(520px, 100%);
-  max-height: 100%;
-  flex: 0 0 0;
+  height: auto;
+  max-width: min(340px, calc(100vw - 120px));
+  max-height: none;
+  flex: none;
   border: 0;
   border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(180deg,#151a1e,#0b0e10);
-  box-shadow: 0 18px 42px rgba(0,0,0,.28);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: flex-basis 180ms ease, width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
+  transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
 }
 
 .side-panel.shop.open {
-  width: min(340px, 38vw);
-  flex-basis: min(340px, 38vw);
+  width: min(340px, calc(100vw - 120px));
   border: 1px solid rgba(255,255,255,.12);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: flex-basis 180ms ease, width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
-}
-
-.side-panel.shop .side-canvas { display: block; width: 100%; height: 100%; }
-.rail-action-primary[aria-expanded="true"] { border-color: rgba(255,204,77,.55); background: linear-gradient(180deg,#35312a,#171918); }
-
-.bottom-bar,
-.rapid-cooldown-container {
-  left: var(--canvas-center, 50%);
-  width: var(--canvas-controls-width, min(980px, calc(100% - 24px)));
-}
-.bottom-bar { transform: translateX(-50%); }
-.rapid-cooldown-container { transform: translateX(-50%); }
-
-@media (max-width: 1200px) and (min-width: 901px) {
-  main { gap: 14px; padding-right: 90px; padding-left: 14px; }
-  .side-panel.shop.open { width: min(300px, 32vw); flex-basis: min(300px, 32vw); }
+  transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
 }
 
 @media (max-width: 900px) {
-  main { gap: 12px; padding: 10px 78px calc(var(--controls-height) + 16px) 10px; }
-  .right-action-rail { width: 68px; padding-inline: 5px; }
-  .rail-action, #shopToggle.rail-action { width: 58px; }
-  .canvas-wrap { width: 100%; min-width: 0; }
+  .side-panel.shop,
   .side-panel.shop.open {
-    position: absolute;
-    z-index: 300;
-    left: 12px;
-    right: 80px;
-    top: calc(var(--header-height) + 12px);
-    bottom: calc(var(--footer-height) + 12px);
-    width: auto;
-    max-width: none;
-    height: auto;
-    max-height: none;
-    flex: none;
+    top: calc(var(--header-height) + 10px);
+    right: 68px;
+    bottom: calc(var(--footer-height) + 10px);
+    left: auto;
+    width: 0;
+    max-width: calc(100vw - 92px);
   }
+
+  .side-panel.shop.open { width: min(420px, calc(100vw - 92px)); }
 }
 
 @media (max-width: 520px) {
-  main { padding-right: 66px; }
-  .right-action-rail { width: 58px; }
-  .rail-action, #shopToggle.rail-action { width: 50px; min-height: 54px; }
-  .rail-action-label { max-width: 46px; font-size: .62rem; }
-  .bottom-bar, .rapid-cooldown-container { width: var(--canvas-controls-width, calc(100% - 12px)); }
-  .side-panel.shop.open { left: 8px; right: 66px; }
-}
+  .side-panel.shop,
+  .side-panel.shop.open {
+    right: 58px;
+    max-width: calc(100vw - 74px);
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .side-panel.shop, .canvas-wrap, .rail-action { transition: none; }
+  .side-panel.shop.open { width: min(420px, calc(100vw - 74px)); }
 }
