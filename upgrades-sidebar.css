@@ -19,7 +19,7 @@ main {
   gap: 10px;
   padding: 12px 8px;
   border-left: 1px solid rgba(255,255,255,.06);
-  background: #050505;
+  background: rgba(5,5,5,.96);
 }
 
 .rail-action,
@@ -39,12 +39,12 @@ main {
   color: var(--text);
   font: 700 .68rem/1 system-ui, sans-serif;
   cursor: pointer;
+  transition: filter 120ms ease, transform 120ms ease, border-color 120ms ease;
 }
 
 .rail-action-primary { color: var(--accent); }
 .rail-action-icon { display: block; font-size: 1.15rem; line-height: 1; }
 .rail-action-label { max-width: 58px; white-space: normal; text-align: center; }
-.rail-action:disabled { opacity: .38; cursor: not-allowed; }
 .rail-action:not(:disabled):hover { filter: brightness(1.12); transform: translateY(-1px); }
 .rail-action:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
@@ -73,9 +73,10 @@ main {
   max-height: 100%;
   flex: 0 0 0;
   border: 0;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(180deg, #151a1e, #0b0e10);
+  background: linear-gradient(180deg,#151a1e,#0b0e10);
+  box-shadow: 0 18px 42px rgba(0,0,0,.28);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -92,16 +93,8 @@ main {
   transition: flex-basis 180ms ease, width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
 }
 
-.side-panel.shop .side-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.rail-action-primary[aria-expanded="true"] {
-  border-color: rgba(255,204,77,.55);
-  background: linear-gradient(180deg,#35312a,#171918);
-}
+.side-panel.shop .side-canvas { display: block; width: 100%; height: 100%; }
+.rail-action-primary[aria-expanded="true"] { border-color: rgba(255,204,77,.55); background: linear-gradient(180deg,#35312a,#171918); }
 
 .bottom-bar,
 .rapid-cooldown-container {
@@ -117,7 +110,7 @@ main {
 }
 
 @media (max-width: 900px) {
-  main { gap: 12px; padding: 8px 78px calc(var(--controls-height) + 16px) 8px; }
+  main { gap: 12px; padding: 10px 78px calc(var(--controls-height) + 16px) 10px; }
   .right-action-rail { width: 68px; padding-inline: 5px; }
   .rail-action, #shopToggle.rail-action { width: 58px; }
   .canvas-wrap { width: 100%; min-width: 0; }
@@ -146,5 +139,5 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .side-panel.shop, .canvas-wrap { transition: none; }
+  .side-panel.shop, .canvas-wrap, .rail-action { transition: none; }
 }
