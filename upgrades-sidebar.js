@@ -5,10 +5,28 @@
   document.getElementById('leftCanvas')?.remove();
 
   const main = document.querySelector('main');
-  const shop = document.getElementById('shop');
+  let shop = document.getElementById('shop');
   const railButtons = [...document.querySelectorAll('.right-action-rail .rail-action')];
   const upgradesButton = document.getElementById('shopToggle');
   if (!main || !shop || railButtons.length === 0) return;
+
+  // Build a fresh, dedicated canvas for the upgrades drawer before main.js
+  // initializes its renderer (scripts run while the document is loading).
+  if (document.readyState === 'loading') {
+    const upgradesPanel = document.createElement('aside');
+    upgradesPanel.id = 'shop';
+    upgradesPanel.className = 'side-panel shop';
+    upgradesPanel.setAttribute('aria-label', 'Upgrades');
+    upgradesPanel.setAttribute('aria-hidden', 'true');
+
+    const upgradesCanvas = document.createElement('canvas');
+    upgradesCanvas.id = 'shopCanvas';
+    upgradesCanvas.className = 'side-canvas';
+    upgradesCanvas.setAttribute('aria-label', 'Shop upgrade panel');
+    upgradesPanel.append(upgradesCanvas);
+    shop.replaceWith(upgradesPanel);
+    shop = upgradesPanel;
+  }
 
   const panelByButton = new Map();
   const panelById = new Map([[shop.id, shop]]);
@@ -70,7 +88,6 @@
     });
 
     if (openButton === upgradesButton) {
-      // Resize the game's shop canvas after the drawer has reached its final size.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
       });
