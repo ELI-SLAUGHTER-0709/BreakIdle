@@ -4,61 +4,97 @@
   document.getElementById('leftPanel')?.remove();
   document.getElementById('leftCanvas')?.remove();
 
+  const main = document.querySelector('main');
   const shop = document.getElementById('shop');
   const railButtons = [...document.querySelectorAll('.right-action-rail .rail-action')];
   const upgradesButton = document.getElementById('shopToggle');
-  if (!shop || railButtons.length === 0) return;
+  if (!main || !shop || railButtons.length === 0) return;
+
+  const panelByButton = new Map();
+  const panelById = new Map([[shop.id, shop]]);
+
+  railButtons.forEach((button, index) => {
+    let panel;
+    if (button === upgradesButton) {
+      panel = shop;
+    } else {
+      const panelNumber = index + 1;
+      const label = `Panel ${panelNumber}`;
+      const panelId = `actionPanel${panelNumber}`;
+      panel = document.createElement('aside');
+      panel.id = panelId;
+      panel.className = 'side-panel shop';
+      panel.setAttribute('aria-label', label);
+      panel.setAttribute('aria-hidden', 'true');
+
+      const canvas = document.createElement('canvas');
+      canvas.id = `actionCanvas${panelNumber}`;
+      canvas.className = 'side-canvas';
+      canvas.tabIndex = 0;
+      canvas.setAttribute('aria-label', `${label} canvas`);
+      panel.append(canvas);
+      main.append(panel);
+
+      const labelElement = button.querySelector('.rail-action-label');
+      if (labelElement) labelElement.textContent = label;
+      button.dataset.menuLabel = label;
+    }
+
+    panelByButton.set(button, panel);
+    panelById.set(panel.id, panel);
+    button.setAttribute('aria-controls', panel.id);
+  });
 
   let activeButton = null;
 
-  function setOpen(open, button = activeButton) {
-    activeButton = open ? button : null;
-    shop.classList.toggle('open', open);
-    shop.classList.toggle('upgrades-active', open && button === upgradesButton);
-    shop.setAttribute('aria-hidden', String(!open));
+  function setOpen(button) {
+    const nextPanel = button ? panelByButton.get(button) : null;
+    const isSamePanelOpen = nextPanel && nextPanel.classList.contains('open');
+    const openButton = isSamePanelOpen ? null : button;
+    activeButton = openButton;
 
-    railButtons.forEach(railButton => {
-      const isActive = open && railButton === activeButton;
-      const label = railButton.dataset.menuLabel || railButton.querySelector('.rail-action-label')?.textContent.trim() || 'menu';
-      railButton.classList.toggle('active', isActive);
-      railButton.setAttribute('aria-expanded', String(isActive));
-      railButton.setAttribute('aria-label', isActive ? `Close ${label}` : `Open ${label}`);
-      railButton.title = isActive ? `Close ${label}` : `Open ${label}`;
+    panelById.forEach(panel => {
+      const isOpen = panel === (openButton && panelByButton.get(openButton));
+      panel.classList.toggle('open', Boolean(isOpen));
+      panel.classList.toggle('upgrades-active', Boolean(isOpen && openButton === upgradesButton));
+      panel.setAttribute('aria-hidden', String(!isOpen));
     });
 
-    if (open && button === upgradesButton) {
-      // Give the drawer its final size, then trigger the game's existing
-      // canvas resize/render logic so the upgrades are visible immediately.
+    railButtons.forEach(railButton => {
+      const isActive = railButton === openButton;
+      const label = railButton.dataset.menuLabel || 'menu';
+      railButton.classList.toggle('active', isActive);
+      railButton.setAttribute('aria-expanded', String(isActive));
+      railButton.setAttribute('aria-label', `${isActive ? 'Close' : 'Open'} ${label}`);
+      railButton.title = `${isActive ? 'Close' : 'Open'} ${label}`;
+    });
+
+    if (openButton === upgradesButton) {
+      // Resize the game's shop canvas after the drawer has reached its final size.
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          window.dispatchEvent(new Event('resize'));
-        });
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
       });
     }
   }
 
   railButtons.forEach(button => {
     button.addEventListener('click', () => {
-      if (button === activeButton && shop.classList.contains('open')) {
-        setOpen(false);
-      } else {
-        setOpen(true, button);
-      }
+      const panel = panelByButton.get(button);
+      setOpen(panel?.classList.contains('open') ? null : button);
     });
   });
 
   document.addEventListener('pointerdown', event => {
     const clickedRail = railButtons.some(button => button.contains(event.target));
-    if (shop.classList.contains('open') && !shop.contains(event.target) && !clickedRail) {
-      setOpen(false);
-    }
+    const clickedPanel = [...panelById.values()].some(panel => panel.contains(event.target));
+    if (activeButton && !clickedPanel && !clickedRail) setOpen(null);
   });
 
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && shop.classList.contains('open')) {
+    if (event.key === 'Escape' && activeButton) {
       const returnFocusTo = activeButton;
-      setOpen(false);
-      returnFocusTo?.focus();
+      setOpen(null);
+      returnFocusTo.focus();
     }
   });
 })();
