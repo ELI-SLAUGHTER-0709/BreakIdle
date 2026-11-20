@@ -1,5 +1,4 @@
-/* Desktop layout: stable game area, visible sidebar, and centered controls. */
-
+/* Desktop layout: stable game area, visible upgrades and usable action drawers. */
 :root {
   --header-height: 64px;
   --footer-height: 28px;
@@ -8,18 +7,11 @@
 
 body {
   min-width: 320px;
-  background:
-    radial-gradient(circle at 38% 42%, rgba(54, 65, 74, .24), transparent 34%),
-    linear-gradient(135deg, #090b0d 0%, #111519 100%);
+  background: radial-gradient(circle at 38% 42%, rgba(54,65,74,.24), transparent 34%), linear-gradient(135deg,#090b0d,#111519);
 }
 
-header {
-  height: var(--header-height);
-  padding: 10px 18px;
-}
-
+header { height: var(--header-height); padding: 10px 18px; }
 .header-left h1 { font-size: 1.25rem; }
-
 #headerStats {
   flex: 1;
   max-width: none;
@@ -33,7 +25,7 @@ header {
 
 main {
   display: grid;
-  grid-template-columns: minmax(430px, 800px) minmax(280px, 340px);
+  grid-template-columns: minmax(0, 800px) minmax(260px, 340px);
   align-items: center;
   justify-content: center;
   gap: 18px;
@@ -42,9 +34,58 @@ main {
 
 .canvas-wrap {
   width: 100%;
-  min-width: 430px;
+  min-width: 0;
   max-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--controls-height) - 58px);
   aspect-ratio: 800 / 520;
+}
+
+/* The upgrades canvas is a persistent desktop column. Other action panels
+   remain drawers, and must not become extra grid columns. */
+#shop.side-panel.shop,
+#shop.side-panel.shop.open {
+  position: relative;
+  inset: auto;
+  display: block;
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: min(520px, calc(100vh - 210px));
+  max-width: 340px;
+  max-height: calc(100vh - 210px);
+  flex: none;
+  border: 1px solid rgba(255,255,255,.12);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
+
+.side-panel.shop:not(#shop) {
+  position: fixed;
+  z-index: 1300;
+  top: calc(var(--header-height) + 12px);
+  right: 82px;
+  bottom: calc(var(--footer-height) + 12px);
+  left: auto;
+  width: 0;
+  height: auto;
+  max-width: min(340px, calc(100vw - 120px));
+  max-height: none;
+  flex: none;
+  border: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
+}
+
+.side-panel.shop:not(#shop).open {
+  width: min(340px, calc(100vw - 120px));
+  border: 1px solid rgba(255,255,255,.12);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
 }
 
 .right-action-rail {
@@ -73,10 +114,8 @@ main {
   color: var(--text);
   cursor: pointer;
 }
-
 .rail-action-primary { border-color: rgba(255,204,77,.42); }
-.rail-action.active,
-.rail-action:hover { background: #252b30; filter: brightness(1.08); }
+.rail-action.active, .rail-action:hover { background: #252b30; filter: brightness(1.08); }
 .rail-action-icon { font-size: 1.15rem; line-height: 1; }
 .rail-action-label { max-width: 52px; overflow: hidden; text-overflow: ellipsis; font-size: .67rem; white-space: nowrap; }
 
@@ -88,66 +127,100 @@ main {
   height: 64px;
   padding: 8px;
 }
-
 .bottom-center {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(140px, 220px));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
+  width: 100%;
 }
-
-.bottom-center button { width: 100%; max-width: none; }
-
+.bottom-center button { flex: 0 1 220px; width: clamp(110px,20vw,220px); max-width: 220px; }
 .rapid-cooldown-container {
   bottom: calc(max(8px, env(safe-area-inset-bottom)) + var(--footer-height) + 68px);
   width: min(720px, calc(100vw - 190px));
 }
-
 footer { height: var(--footer-height); justify-content: flex-start; }
 
-@media (min-width: 901px) {
-  .side-panel.shop {
-    position: relative;
-    inset: auto;
-    display: block;
-    width: 100%;
-    height: min(520px, calc(100vh - 210px));
-    max-width: 340px;
-    max-height: calc(100vh - 210px);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  #shopToggle { display: none; }
-}
-
 @media (max-width: 1200px) and (min-width: 901px) {
-  main { grid-template-columns: minmax(430px, 700px) minmax(260px, 300px); }
+  main { grid-template-columns: minmax(0, 700px) minmax(250px, 300px); }
+  #shop.side-panel.shop, #shop.side-panel.shop.open { max-width: 300px; }
   #headerStats { gap: 10px; }
   #headerStats > div:not(.level-progress):nth-child(n+5) { display: none; }
 }
 
 @media (max-width: 900px) {
-  :root { --header-height: 58px; }
-
+  :root { --header-height: 58px; --footer-height: 32px; }
   main {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 10px 68px calc(var(--controls-height) + 12px) 10px;
   }
-
-  .canvas-wrap { width: 100%; min-width: 0; }
-
-  .bottom-bar,
-  .rapid-cooldown-container {
+  .canvas-wrap { width: 100%; min-width: 0; max-height: none; flex: 0 0 auto; }
+  #shop.side-panel.shop, #shop.side-panel.shop.open {
+    position: fixed;
+    z-index: 1300;
+    top: calc(var(--header-height) + 10px);
+    right: 68px;
+    bottom: calc(var(--footer-height) + 10px);
+    left: auto;
+    display: block;
+    width: 0;
+    height: auto;
+    max-width: calc(100vw - 92px);
+    max-height: none;
+    border: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
+  }
+  #shop.side-panel.shop.open {
+    width: min(420px, calc(100vw - 92px));
+    border: 1px solid rgba(255,255,255,.12);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
+  }
+  .side-panel.shop:not(#shop), .side-panel.shop:not(#shop).open {
+    top: calc(var(--header-height) + 10px);
+    right: 68px;
+    bottom: calc(var(--footer-height) + 10px);
+    max-width: calc(100vw - 92px);
+  }
+  .side-panel.shop:not(#shop).open { width: min(420px, calc(100vw - 92px)); }
+  .bottom-bar, .rapid-cooldown-container {
     left: 50%;
     width: calc(100% - 92px);
     max-width: calc(100% - 92px);
   }
-
-  .bottom-center { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bottom-center { gap: 6px; }
+  .bottom-center button { flex: 0 1 180px; width: clamp(82px,27vw,180px); min-width: 0; max-width: 180px; }
+  .rapid-label { display: none; }
+  .rapid-time { min-width: 78px; }
   .right-action-rail { right: 8px; }
+}
+
+@media (max-width: 520px) {
+  :root { --controls-height: 68px; }
+  #headerStats { max-width: 42%; }
+  .level-progress { width: 120px; }
+  .progress-label { font-size: .75rem; }
+  .bottom-bar, .rapid-cooldown-container { width: calc(100% - 12px); max-width: calc(100% - 12px); }
+  .bottom-bar { height: 60px; padding: 6px; }
+  .bottom-center { gap: 5px; }
+  .bottom-center button { flex-basis: 0; width: auto; max-width: none; height: 44px; padding-inline: 8px; font-size: .82rem; }
+  #shop.side-panel.shop, #shop.side-panel.shop.open,
+  .side-panel.shop:not(#shop), .side-panel.shop:not(#shop).open {
+    right: 58px;
+    max-width: calc(100vw - 74px);
+  }
+  #shop.side-panel.shop.open,
+  .side-panel.shop:not(#shop).open { width: min(420px, calc(100vw - 74px)); }
+  .settings-menu { right: -2px; }
 }
