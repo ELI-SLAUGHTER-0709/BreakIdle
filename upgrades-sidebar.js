@@ -65,6 +65,13 @@
 
   let activeButton = null;
   let layoutTimer = 0;
+  const desktopLayout = window.matchMedia('(min-width: 901px)');
+
+  function syncShopAccessibility() {
+    // The upgrades panel is always visible as the desktop sidebar, but is a
+    // drawer on smaller screens and should only be exposed while open there.
+    shop.setAttribute('aria-hidden', String(!desktopLayout.matches && !shop.classList.contains('open')));
+  }
 
   function setOpen(button) {
     const nextPanel = button ? panelByButton.get(button) : null;
@@ -78,6 +85,7 @@
       panel.classList.toggle('upgrades-active', isOpen && openButton === upgradesButton);
       panel.setAttribute('aria-hidden', String(!isOpen));
     });
+    syncShopAccessibility();
 
     railButtons.forEach(railButton => {
       const isActive = railButton === openButton;
@@ -88,13 +96,13 @@
       railButton.title = `${isActive ? 'Close' : 'Open'} ${label}`;
     });
 
-    // Align fixed controls immediately, then resize canvases after the drawer's
-    // width transition has finished. Resizing earlier captures an intermediate
-    // CSS size and can leave the canvas blurred or incorrectly scaled.
     window.dispatchEvent(new Event('breakidle-layout-change'));
     window.clearTimeout(layoutTimer);
     layoutTimer = window.setTimeout(() => window.dispatchEvent(new Event('resize')), 220);
   }
+
+  desktopLayout.addEventListener('change', syncShopAccessibility);
+  syncShopAccessibility();
 
   railButtons.forEach(button => {
     button.addEventListener('click', event => {
