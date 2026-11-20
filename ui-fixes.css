@@ -10,23 +10,57 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  width: 100%;
+  width: auto;
+}
+
+/* Raise the bar and size it to the controls that are currently visible. */
+.bottom-bar {
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 14px);
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  height: auto;
+  padding: 8px 10px;
 }
 
 .bottom-center button {
-  flex: 1 1 0;
-  width: auto;
-  max-width: 260px;
+  flex: 0 1 220px;
+  width: clamp(110px, 20vw, 220px);
+  max-width: 220px;
   align-self: center;
 }
 
 @media (max-width: 900px) {
+  .bottom-bar {
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 12px);
+    max-width: calc(100% - 16px);
+    padding: 6px;
+  }
+
   .bottom-center {
     gap: 6px;
   }
 
   .bottom-center button {
+    flex: 0 1 180px;
+    width: clamp(82px, 27vw, 180px);
     min-width: 0;
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 520px) {
+  .bottom-bar {
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 10px);
+  }
+
+  .bottom-center {
+    gap: 5px;
+  }
+
+  .bottom-center button {
+    flex-basis: 0;
+    width: auto;
     max-width: none;
+    padding-inline: 8px;
   }
 }
