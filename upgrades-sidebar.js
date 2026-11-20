@@ -10,8 +10,8 @@
   const upgradesButton = document.getElementById('shopToggle');
   if (!main || !shop || railButtons.length === 0) return;
 
-  // Build a fresh, dedicated canvas for the upgrades drawer before main.js
-  // initializes its renderer (scripts run while the document is loading).
+  // main.js creates a renderer for #shopCanvas during DOMContentLoaded. Replace
+  // the canvas before then so that it has a single, dedicated shop surface.
   if (document.readyState === 'loading') {
     const upgradesPanel = document.createElement('aside');
     upgradesPanel.id = 'shop';
@@ -64,17 +64,18 @@
   });
 
   let activeButton = null;
+  let layoutTimer = 0;
 
   function setOpen(button) {
     const nextPanel = button ? panelByButton.get(button) : null;
-    const isSamePanelOpen = nextPanel && nextPanel.classList.contains('open');
-    const openButton = isSamePanelOpen ? null : button;
+    const openButton = nextPanel?.classList.contains('open') ? null : button;
     activeButton = openButton;
+    const activePanel = openButton ? panelByButton.get(openButton) : null;
 
     panelById.forEach(panel => {
-      const isOpen = panel === (openButton && panelByButton.get(openButton));
-      panel.classList.toggle('open', Boolean(isOpen));
-      panel.classList.toggle('upgrades-active', Boolean(isOpen && openButton === upgradesButton));
+      const isOpen = panel === activePanel;
+      panel.classList.toggle('open', isOpen);
+      panel.classList.toggle('upgrades-active', isOpen && openButton === upgradesButton);
       panel.setAttribute('aria-hidden', String(!isOpen));
     });
 
@@ -87,17 +88,22 @@
       railButton.title = `${isActive ? 'Close' : 'Open'} ${label}`;
     });
 
-    if (openButton === upgradesButton) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
-      });
-    }
+    // Align fixed controls immediately, then resize canvases after the drawer's
+    // width transition has finished. Resizing earlier captures an intermediate
+    // CSS size and can leave the canvas blurred or incorrectly scaled.
+    window.dispatchEvent(new Event('breakidle-layout-change'));
+    window.clearTimeout(layoutTimer);
+    layoutTimer = window.setTimeout(() => window.dispatchEvent(new Event('resize')), 220);
   }
 
   railButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', event => {
       const panel = panelByButton.get(button);
       setOpen(panel?.classList.contains('open') ? null : button);
+
+      // main.js has a legacy shopToggle click handler that independently flips
+      // the same panel. Stop it to prevent the drawer immediately toggling shut.
+      if (button === upgradesButton) event.stopImmediatePropagation();
     });
   });
 
