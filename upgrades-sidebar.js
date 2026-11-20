@@ -67,10 +67,12 @@
   let layoutTimer = 0;
   const desktopLayout = window.matchMedia('(min-width: 901px)');
 
-  function syncShopAccessibility() {
-    // The upgrades panel is always visible as the desktop sidebar, but is a
-    // drawer on smaller screens and should only be exposed while open there.
-    shop.setAttribute('aria-hidden', String(!desktopLayout.matches && !shop.classList.contains('open')));
+  function syncShopState() {
+    const isOpen = shop.classList.contains('open');
+    // Desktop opens the upgrades panel as a real grid column; small screens use
+    // the same state to show the drawer over the game.
+    main.classList.toggle('upgrades-open', desktopLayout.matches && isOpen);
+    shop.setAttribute('aria-hidden', String(!isOpen));
   }
 
   function setOpen(button) {
@@ -85,7 +87,7 @@
       panel.classList.toggle('upgrades-active', isOpen && openButton === upgradesButton);
       panel.setAttribute('aria-hidden', String(!isOpen));
     });
-    syncShopAccessibility();
+    syncShopState();
 
     railButtons.forEach(railButton => {
       const isActive = railButton === openButton;
@@ -101,8 +103,12 @@
     layoutTimer = window.setTimeout(() => window.dispatchEvent(new Event('resize')), 220);
   }
 
-  desktopLayout.addEventListener('change', syncShopAccessibility);
-  syncShopAccessibility();
+  desktopLayout.addEventListener('change', () => {
+    syncShopState();
+    window.dispatchEvent(new Event('breakidle-layout-change'));
+    window.dispatchEvent(new Event('resize'));
+  });
+  syncShopState();
 
   railButtons.forEach(button => {
     button.addEventListener('click', event => {
