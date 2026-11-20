@@ -1,12 +1,156 @@
-/* Restore the Upgrades button in the right action rail at every viewport size. */
+/* Desktop: reserve a real column for upgrades instead of placing its drawer
+   over the game canvas or leaving it hidden behind the action rail. */
+@media (min-width: 901px) {
+  main {
+    display: grid;
+    grid-template-columns: minmax(0, 800px) minmax(250px, 340px);
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 18px 82px calc(var(--controls-height, 72px) + 24px) 18px;
+  }
+
+  .canvas-wrap {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+    max-height: calc(100vh - var(--header-height, 58px) - var(--footer-height, 36px) - var(--controls-height, 72px) - 58px);
+  }
+
+  #shop.side-panel.shop,
+  #shop.side-panel.shop.open {
+    position: relative;
+    inset: auto;
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    height: min(520px, calc(100vh - 190px));
+    max-width: 340px;
+    max-height: calc(100vh - 190px);
+    flex: none;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  /* Reserve the desktop drawer behavior for non-upgrade action panels. */
+  .side-panel.shop:not(#shop) {
+    position: fixed;
+    inset: calc(var(--header-height, 58px) + 12px) 82px calc(var(--footer-height, 36px) + 12px) auto;
+    width: 0;
+    height: auto;
+    max-width: min(340px, calc(100vw - 120px));
+    max-height: none;
+    border: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
+  }
+
+  .side-panel.shop:not(#shop).open {
+    width: min(340px, calc(100vw - 120px));
+    border: 1px solid rgba(255,255,255,.12);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
+  }
+}
+
+/* Keep the upgrades button in the right rail, while the actual shop remains
+   visible beside the game on desktop. */
 #shopToggle,
 .right-action-rail #shopToggle {
   display: inline-flex !important;
 }
 
-@media (min-width: 901px) {
-  /* Keep the upgrades rail button visibly selected while the desktop sidebar is open. */
-  #shopToggle.rail-action-primary {
-    border-color: rgba(255,204,77,.68);
+/* Lift the control dock clear of the footer and give it a little breathing room. */
+.bottom-bar {
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 24px);
+}
+
+@media (max-width: 900px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 10px 78px calc(var(--controls-height, 72px) + 14px) 10px;
+  }
+
+  .canvas-wrap {
+    width: 100%;
+    min-width: 0;
+    max-height: none;
+    flex: 0 0 auto;
+  }
+
+  #shop.side-panel.shop,
+  #shop.side-panel.shop.open {
+    position: fixed;
+    z-index: 1300;
+    top: calc(var(--header-height, 58px) + 10px);
+    right: 68px;
+    bottom: calc(var(--footer-height, 32px) + 10px);
+    left: auto;
+    display: block;
+    width: 0;
+    height: auto;
+    max-width: calc(100vw - 92px);
+    max-height: none;
+    border: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
+  }
+
+  #shop.side-panel.shop.open {
+    width: min(420px, calc(100vw - 92px));
+    border: 1px solid rgba(255,255,255,.12);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
+  }
+
+  .side-panel.shop:not(#shop),
+  .side-panel.shop:not(#shop).open {
+    top: calc(var(--header-height, 58px) + 10px);
+    right: 68px;
+    bottom: calc(var(--footer-height, 32px) + 10px);
+    max-width: calc(100vw - 92px);
+  }
+
+  .side-panel.shop:not(#shop).open {
+    width: min(420px, calc(100vw - 92px));
+  }
+
+  .bottom-bar {
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 20px);
+  }
+}
+
+@media (max-width: 520px) {
+  #shop.side-panel.shop,
+  #shop.side-panel.shop.open,
+  .side-panel.shop:not(#shop),
+  .side-panel.shop:not(#shop).open {
+    right: 58px;
+    max-width: calc(100vw - 74px);
+  }
+
+  #shop.side-panel.shop.open,
+  .side-panel.shop:not(#shop).open {
+    width: min(420px, calc(100vw - 74px));
   }
 }
