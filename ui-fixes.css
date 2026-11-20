@@ -13,11 +13,13 @@
   width: auto;
 }
 
-/* Raise the bar and size it to the controls that are currently visible. */
+/* Raise the compact control bar and align it beneath the game canvas. */
 .bottom-bar {
-  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 14px);
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 22px);
+  left: var(--canvas-center, 50%);
+  transform: translateX(-50%);
   width: fit-content;
-  max-width: calc(100% - 24px);
+  max-width: min(calc(100vw - 24px), var(--canvas-controls-width, calc(100vw - 24px)));
   height: auto;
   padding: 8px 10px;
 }
@@ -31,8 +33,8 @@
 
 @media (max-width: 900px) {
   .bottom-bar {
-    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 12px);
-    max-width: calc(100% - 16px);
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 20px);
+    max-width: min(calc(100vw - 16px), var(--canvas-controls-width, calc(100vw - 16px)));
     padding: 6px;
   }
 
@@ -50,7 +52,8 @@
 
 @media (max-width: 520px) {
   .bottom-bar {
-    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 10px);
+    bottom: calc(max(6px, env(safe-area-inset-bottom)) + 18px);
+    max-width: min(calc(100vw - 12px), var(--canvas-controls-width, calc(100vw - 12px)));
   }
 
   .bottom-center {
