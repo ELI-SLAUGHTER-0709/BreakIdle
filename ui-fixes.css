@@ -1,244 +1,89 @@
-/* Desktop: reserve a real column for upgrades without letting the canvas force
-   the grid wider than the available space. */
+/* Desktop: let the playfield use the available space and only reserve a shop
+   column while the upgrades drawer is open. */
 @media (min-width: 901px) {
   main {
-    display: grid;
+    grid-template-columns: minmax(0, 1fr) 0;
+    gap: 0;
+  }
+
+  main.upgrades-open {
     grid-template-columns: minmax(0, 1fr) minmax(220px, min(300px, 28vw));
-    align-items: center;
-    justify-content: center;
     gap: 18px;
-    padding: 18px 82px calc(var(--controls-height, 72px) + 24px) 18px;
   }
 
   .canvas-wrap {
-    grid-column: 1;
-    grid-row: 1;
     width: 100%;
-    min-width: 0;
-    max-width: 800px;
-    max-height: calc(100vh - var(--header-height, 58px) - var(--footer-height, 36px) - var(--controls-height, 72px) - 58px);
-  }
-
-  #shop.side-panel.shop,
-  #shop.side-panel.shop.open {
-    position: relative;
-    inset: auto;
-    display: block;
-    grid-column: 2;
-    grid-row: 1;
-    width: 100%;
-    min-width: 0;
-    height: min(520px, calc(100vh - 190px));
+    height: 100%;
+    min-height: 0;
     max-width: none;
-    max-height: calc(100vh - 190px);
-    flex: none;
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: none;
-  }
-
-  /* Reserve the desktop drawer behavior for non-upgrade action panels. */
-  .side-panel.shop:not(#shop) {
-    position: fixed;
-    inset: calc(var(--header-height, 58px) + 12px) 82px calc(var(--footer-height, 36px) + 12px) auto;
-    width: 0;
-    height: auto;
-    max-width: min(340px, calc(100vw - 120px));
     max-height: none;
-    border: 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
-  }
-
-  .side-panel.shop:not(#shop).open {
-    width: min(340px, calc(100vw - 120px));
-    border: 1px solid rgba(255,255,255,.12);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
-  }
-}
-
-/* Keep the upgrades button in the right rail, while the actual shop remains
-   visible beside the game on desktop. */
-#shopToggle,
-.right-action-rail #shopToggle {
-  display: inline-flex !important;
-}
-
-/* Raise the control dock slightly above the footer. */
-.bottom-bar {
-  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 32px);
-}
-
-@media (max-width: 900px) {
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 10px 78px calc(var(--controls-height, 72px) + 14px) 10px;
-  }
-
-  .canvas-wrap {
-    width: 100%;
-    min-width: 0;
-    max-height: none;
-    flex: 0 0 auto;
+    aspect-ratio: auto;
   }
 
   #shop.side-panel.shop,
   #shop.side-panel.shop.open {
-    position: fixed;
-    z-index: 1300;
-    top: calc(var(--header-height, 58px) + 10px);
-    right: 68px;
-    bottom: calc(var(--footer-height, 32px) + 10px);
-    left: auto;
+    display: none;
+  }
+
+  main.upgrades-open #shop.side-panel.shop,
+  main.upgrades-open #shop.side-panel.shop.open {
     display: block;
-    width: 0;
-    height: auto;
-    max-width: calc(100vw - 92px);
-    max-height: none;
-    border: 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: width 180ms ease, opacity 120ms ease, visibility 0s linear 180ms;
-  }
-
-  #shop.side-panel.shop.open {
-    width: min(420px, calc(100vw - 92px));
-    border: 1px solid rgba(255,255,255,.12);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: width 180ms ease, opacity 120ms ease 60ms, visibility 0s;
-  }
-
-  .side-panel.shop:not(#shop),
-  .side-panel.shop:not(#shop).open {
-    top: calc(var(--header-height, 58px) + 10px);
-    right: 68px;
-    bottom: calc(var(--footer-height, 32px) + 10px);
-    max-width: calc(100vw - 92px);
-  }
-
-  .side-panel.shop:not(#shop).open {
-    width: min(420px, calc(100vw - 92px));
-  }
-
-  .bottom-bar {
-    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 28px);
   }
 }
 
-@media (max-width: 520px) {
-  #shop.side-panel.shop,
-  #shop.side-panel.shop.open,
-  .side-panel.shop:not(#shop),
-  .side-panel.shop:not(#shop).open {
-    right: 58px;
-    max-width: calc(100vw - 74px);
-  }
-
-  #shop.side-panel.shop.open,
-  .side-panel.shop:not(#shop).open {
-    width: min(420px, calc(100vw - 74px));
-  }
-}
-
-/* The action rail is outside <main>; without explicit positioning, the browser
-   lays it out as an ordinary block after the game, which puts its buttons at
-   the bottom of the page and leaves their native, unstyled appearance. */
+/* Give the action rail a more deliberate, tactile button treatment. */
 .right-action-rail {
-  position: fixed;
-  z-index: 1350;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-  width: 62px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 14px;
-  background: rgba(11, 14, 17, .94);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
-  backdrop-filter: blur(10px);
+  width: 70px;
+  padding: 9px;
+  border-color: rgba(255, 255, 255, .14);
+  background: linear-gradient(160deg, rgba(24, 31, 37, .97), rgba(9, 12, 15, .97));
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .48), inset 0 1px rgba(255, 255, 255, .05);
 }
 
 .right-action-rail .rail-action {
-  display: flex;
-  min-width: 0;
-  min-height: 48px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 5px 2px;
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 10px;
-  background: #1b2329;
-  color: var(--text);
-  cursor: pointer;
-  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+  min-height: 56px;
+  gap: 5px;
+  border-color: rgba(255, 255, 255, .08);
+  background: linear-gradient(180deg, #26313a, #192128);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .06), 0 3px 8px rgba(0, 0, 0, .2);
 }
 
-.right-action-rail .rail-action:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255, 204, 77, .5);
-  background: #263139;
+.right-action-rail .rail-action:active {
+  transform: translateY(1px) scale(.98);
 }
 
 .right-action-rail .rail-action-primary,
 .right-action-rail .rail-action.active {
-  border-color: rgba(255, 204, 77, .55);
-  background: linear-gradient(180deg, #34301f, #25251f);
+  border-color: rgba(255, 204, 77, .7);
+  background: linear-gradient(180deg, #51421f, #302a1d);
+  box-shadow: inset 0 1px rgba(255, 235, 170, .16), 0 0 16px rgba(255, 204, 77, .12);
 }
 
 .rail-action-icon {
-  font-size: 1.15rem;
-  line-height: 1;
+  color: #f4cb69;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 8px rgba(255, 204, 77, .2);
 }
 
 .rail-action-label {
-  max-width: 100%;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: .58rem;
-  line-height: 1.1;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: #d7e0e5;
+  font-size: .62rem;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.right-action-rail .rail-action:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @media (max-width: 520px) {
   .right-action-rail {
-    right: 4px;
-    width: 46px;
-    gap: 6px;
+    width: 50px;
     padding: 4px;
-    border-radius: 12px;
   }
 
   .right-action-rail .rail-action {
-    min-height: 42px;
-    padding: 4px 1px;
-  }
-
-  .rail-action-label {
-    font-size: .48rem;
+    min-height: 46px;
   }
 }
