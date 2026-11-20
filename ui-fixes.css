@@ -1,9 +1,9 @@
-/* Desktop: reserve a real column for upgrades instead of placing its drawer
-   over the game canvas or leaving it hidden behind the action rail. */
+/* Desktop: reserve a real column for upgrades without letting the canvas force
+   the grid wider than the available space. */
 @media (min-width: 901px) {
   main {
     display: grid;
-    grid-template-columns: minmax(0, 800px) minmax(250px, 340px);
+    grid-template-columns: minmax(0, 800px) minmax(220px, min(300px, 28vw));
     align-items: center;
     justify-content: center;
     gap: 18px;
@@ -26,8 +26,9 @@
     grid-column: 2;
     grid-row: 1;
     width: 100%;
+    min-width: 0;
     height: min(520px, calc(100vh - 190px));
-    max-width: 340px;
+    max-width: none;
     max-height: calc(100vh - 190px);
     flex: none;
     border: 1px solid rgba(255,255,255,.12);
@@ -70,9 +71,9 @@
   display: inline-flex !important;
 }
 
-/* Lift the control dock clear of the footer and give it a little breathing room. */
+/* Raise the control dock slightly above the footer. */
 .bottom-bar {
-  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 24px);
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 32px);
 }
 
 @media (max-width: 900px) {
@@ -136,7 +137,7 @@
   }
 
   .bottom-bar {
-    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 20px);
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 28px);
   }
 }
 
