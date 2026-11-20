@@ -1,68 +1,32 @@
-/* UI layout fixes */
-
-/* Keep the controls level and center the visible button group in the bar. */
+/* Keep game controls together in one level row inside the bottom control bar. */
 .big-red {
-  position: relative;
-  top: 0;
+  position: static;
+  top: auto;
 }
 
 .bottom-center {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 100%;
 }
 
 .bottom-center button {
-  flex: 0 1 320px;
+  flex: 1 1 0;
+  width: auto;
+  max-width: 260px;
+  align-self: center;
 }
 
-/* Prevent header stats and the settings control from colliding on narrow screens. */
-@media (max-width: 520px) {
-  header {
-    gap: 6px;
-  }
-
-  #headerStats {
-    justify-self: end;
-  }
-
-  .level-progress {
-    width: min(120px, 32vw);
-  }
-
-  .settings-menu {
-    max-height: calc(var(--viewport-height, 100vh) - 72px);
-    overflow-y: auto;
-  }
-}
-
-/* Keep the mobile drawer contained between the header, action rail, and footer. */
 @media (max-width: 900px) {
-  .side-panel.shop.open {
-    position: fixed;
-    z-index: 350;
-    top: calc(var(--header-height) + 8px);
-    right: 76px;
-    bottom: calc(var(--footer-height) + 8px);
-    left: 8px;
-    width: auto;
-    height: auto;
-    max-height: none;
-  }
-
   .bottom-center {
     gap: 6px;
   }
 
   .bottom-center button {
-    flex: 1 1 0;
-    width: auto;
-  }
-}
-
-@media (max-width: 520px) {
-  .side-panel.shop.open {
-    right: 66px;
+    min-width: 0;
+    max-width: none;
   }
 }
